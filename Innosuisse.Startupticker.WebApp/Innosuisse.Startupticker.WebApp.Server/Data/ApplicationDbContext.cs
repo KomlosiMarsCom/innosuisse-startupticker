@@ -60,6 +60,8 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
                 m.ToTable("_StartuptickerDeal");
                 m.HasKey(i => i.Id);
 
+                m.Property(i => i.Confidential).HasDefaultValue(false);
+                m.Property(i => i.AmountConfidential).HasDefaultValue(false);
                 m.HasOne(o => o.ECompany)
                     .WithMany()
                     .HasForeignKey(o => o.Company)
