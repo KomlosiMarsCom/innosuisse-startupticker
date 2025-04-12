@@ -1,0 +1,6 @@
+@Innosuisse.Startupticker.WebApp.Server_HostAddress = http://localhost:5255
+
+GET {{Innosuisse.Startupticker.WebApp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
