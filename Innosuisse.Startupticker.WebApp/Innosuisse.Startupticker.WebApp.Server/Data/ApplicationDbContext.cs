@@ -51,7 +51,8 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
             modelBuilder.Entity<Company>(m =>
             {
                 m.ToTable("_StartuptickerCompany");
-                m.HasKey(i => i.Code);
+                m.HasKey(i => i.Title);
+                m.Property(i => i.Title).HasMaxLength(300);
             });
 
             modelBuilder.Entity<Deal>(m =>
