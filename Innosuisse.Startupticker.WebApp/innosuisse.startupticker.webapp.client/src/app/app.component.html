@@ -1,24 +1,72 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+<dx-tab-panel [deferRendering]="true" [repaintChangesOnly]="false">
+  <dxi-item title="Organizations (Crunchbase)">
+    <div>
+      <dx-data-grid [dataSource]="dataSource"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 100px)"
+                    width="100%">
 
-<p>This component demonstrates fetching data from the server.</p>
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
 
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
 
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+        <dxo-paging [pageSize]="50"></dxo-paging>
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+  <dxi-item title="Companies (Startupticker)">
+    <div>
+      <dx-data-grid [dataSource]="'[]'"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 100px)"
+                    width="100%">
+
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
+
+        <dxo-paging [pageSize]="50"></dxo-paging>
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+</dx-tab-panel>

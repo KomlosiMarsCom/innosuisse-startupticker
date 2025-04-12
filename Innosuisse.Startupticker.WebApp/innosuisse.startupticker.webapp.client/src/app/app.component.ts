@@ -1,12 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { DataSourceLoadOptions, RawDataService } from '../../typescript-client';
+import { lastValueFrom } from 'rxjs';
+import { CustomStore, DataSource } from 'devextreme-angular/common/data';
 
 @Component({
   selector: 'app-root',
@@ -14,23 +9,20 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  dataSource: DataSource<any, any>;
+  store: CustomStore;
+  constructor(private readonly _rawDataService: RawDataService) {
+    this.store = new CustomStore({
+      key: 'id',
+      load: (opt) => {
+        return lastValueFrom(this._rawDataService.gridDataCrunchbasePost(opt as DataSourceLoadOptions))
+      }
+    });
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
+    this.dataSource = new DataSource(this.store);
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  ngOnInit() {
   }
 
   title = 'innosuisse.startupticker.webapp.client';

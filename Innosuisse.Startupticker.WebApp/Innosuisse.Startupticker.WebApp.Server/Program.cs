@@ -20,20 +20,18 @@ namespace Innosuisse.Startupticker.WebApp.Server
             }
 
             builder.Services.AddLogging();
-
             builder.Services.AddControllers()
-                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.UseInlineDefinitionsForEnums();
             });
             builder.Services.AddProblemDetails();
-
-            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
 
             builder.Services.AddCors(options =>
             {
@@ -49,6 +47,10 @@ namespace Innosuisse.Startupticker.WebApp.Server
                     );
             });
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
