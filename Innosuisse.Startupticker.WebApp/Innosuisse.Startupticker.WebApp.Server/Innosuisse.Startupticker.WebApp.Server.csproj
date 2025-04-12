@@ -32,4 +32,8 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Entities\_Raw\Startupticker\" />
+  </ItemGroup>
+
 </Project>
