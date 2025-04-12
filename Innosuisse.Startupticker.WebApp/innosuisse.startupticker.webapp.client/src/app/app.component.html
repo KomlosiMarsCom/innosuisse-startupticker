@@ -1,24 +1,115 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+<div style="display:flex; justify-content:space-around; padding: 4px;">
+  <img src="startupticker-logo-animated.gif" width="50" />
+</div>
+<dx-tab-panel [deferRendering]="true" [repaintChangesOnly]="false">
+  <dxi-item title="Startups (Processed data)">
+    <div>
+      <dx-data-grid [dataSource]="dataSourceStartups"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 170px)"
+                    width="100%">
 
-<p>This component demonstrates fetching data from the server.</p>
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
 
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+        <dxo-paging [pageSize]="50"></dxo-paging>
 
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+
+        <dxo-master-detail [enabled]="true"
+                           template="masterDetail"></dxo-master-detail>
+
+        <div *dxTemplate="let item of 'masterDetail'">
+          <app-detail-view [id]="item.data.id"></app-detail-view>
+        </div>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+  <dxi-item title="Organizations (Crunchbase - Raw data)">
+    <div>
+      <dx-data-grid [dataSource]="dataSourceCrunchbase"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 200px)"
+                    width="100%">
+
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
+
+        <dxo-paging [pageSize]="50"></dxo-paging>
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+  <dxi-item title="Companies (Startupticker - Raw data)">
+    <div>
+      <dx-data-grid [dataSource]="dataSourceStartupticker"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 200px)"
+                    width="100%">
+
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
+
+        <dxo-paging [pageSize]="50"></dxo-paging>
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+</dx-tab-panel>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2191419">
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
   <PropertyGroup>
     <StartupCommand>npm start</StartupCommand>
     <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
@@ -7,6 +7,9 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\innosuisse.startupticker.webapp.client\browser\</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\detail-view\" />
+  </ItemGroup>
   <!--Uncomment when you need to regenerate typescript client-->
   <!--<Target Name="CreateTypescriptAPI" AfterTargets="PostBuildEvent">
     <Exec Command="npm install @openapitools/openapi-generator-cli -g" />

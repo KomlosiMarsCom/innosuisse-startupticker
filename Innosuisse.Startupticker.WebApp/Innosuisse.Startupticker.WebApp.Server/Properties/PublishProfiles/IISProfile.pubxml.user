@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIo5nIadjjkS7yi5bxMAylAAAAAACAAAAAAAQZgAAAAEAACAAAABpzSv6FxEBKWZtxcWrAj83tfLcCI7ZirnNfB8IXJf2OwAAAAAOgAAAAAIAACAAAACdcttXE90XqfNR6VmJt3gjBWo7yANFPZIrhXf//mlK2iAAAACi/RYShRqkG8Iz5MCxNTFoTkXK82vopqBkeaLhgC5OJUAAAADyo2AHRcMrXkBc4NRo5qLeQE8Rkjzb8rruCcsuL93W2LczPgf4GqR9zpR6j5edqr/3/LRfrV8CqH4pYvohQ+tW</EncryptedPassword>
+    <History>False|2025-04-12T19:42:38.9373060Z||;True|2025-04-12T21:12:27.1806984+02:00||;True|2025-04-12T21:05:27.0209145+02:00||;False|2025-04-12T21:01:34.2213135+02:00||;False|2025-04-12T20:59:36.4452099+02:00||;True|2025-04-12T20:51:04.1235152+02:00||;False|2025-04-12T20:49:34.4032152+02:00||;True|2025-04-12T20:47:03.1689517+02:00||;True|2025-04-12T20:21:33.2874345+02:00||;True|2025-04-12T20:19:01.1365227+02:00||;True|2025-04-12T20:13:49.2270060+02:00||;True|2025-04-12T20:06:07.0727164+02:00||;True|2025-04-12T20:00:44.8336484+02:00||;True|2025-04-12T19:55:30.6388607+02:00||;False|2025-04-12T19:53:20.1093569+02:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="Innosuisse.Startupticker.WebApp.Server.Data.ApplicationDbContext">
+      <Value>Server=WIN-F2S18C2AAPE\SQLEXPRESS%3bDatabase=Innosuise%3bTrusted_Connection=True%3bTrustServerCertificate=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

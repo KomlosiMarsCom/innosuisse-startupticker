@@ -2,6 +2,7 @@ using Azure;
 using Innosuisse.Startupticker.WebApp.Server.Data;
 using Innosuisse.Startupticker.WebApp.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using OpenAI;
 using System.Text.Json.Serialization;
 
@@ -13,8 +14,8 @@ namespace Innosuisse.Startupticker.WebApp.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+            //builder.Configuration
+            //    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
             if (builder.Environment.IsDevelopment())
             {
@@ -23,20 +24,19 @@ namespace Innosuisse.Startupticker.WebApp.Server
             }
 
             builder.Services.AddLogging();
-
+            builder.Services.AddSerilog();
             builder.Services.AddControllers()
-                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.UseInlineDefinitionsForEnums();
             });
             builder.Services.AddProblemDetails();
-
-            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
 
             builder.Services.AddCors(options =>
             {
@@ -52,6 +52,10 @@ namespace Innosuisse.Startupticker.WebApp.Server
                     );
             });
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddSingleton<OpenAIService>();
 
@@ -60,11 +64,17 @@ namespace Innosuisse.Startupticker.WebApp.Server
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                Log.Logger = new LoggerConfiguration()
+                   .WriteTo.Console()
+                   .CreateLogger();
             }
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                Log.Logger =  new LoggerConfiguration()
+                    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Hour)
+                    .CreateLogger();
             }
 
             app.UseDefaultFiles();

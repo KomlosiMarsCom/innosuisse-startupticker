@@ -29,6 +29,102 @@
         }
       }
     },
+    "/grid-data-startups": {
+      "post": {
+        "tags": [
+          "ProcessedData"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funding-round": {
+      "get": {
+        "tags": [
+          "ProcessedData"
+        ],
+        "parameters": [
+          {
+            "name": "startupId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StartupFundingRound"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StartupFundingRound"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StartupFundingRound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/grid-data-startupticker": {
       "post": {
         "tags": [
@@ -327,6 +423,152 @@
           },
           "desc": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Startup": {
+        "required": [
+          "id",
+          "name",
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "legalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "industry": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "canton": {
+            "type": "string",
+            "nullable": true
+          },
+          "region": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "foundedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "foundedYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wasFunded": {
+            "type": "boolean"
+          },
+          "fundingRoundsCount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalFunding": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lastValuation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lastFundedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isClosed": {
+            "type": "boolean"
+          },
+          "closedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startupsFundingRounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StartupFundingRound"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StartupFundingRound": {
+        "required": [
+          "dealId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dealId": {
+            "type": "string",
+            "nullable": true
+          },
+          "startupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "investors": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valuation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startup": {
+            "$ref": "#/components/schemas/Startup"
           }
         },
         "additionalProperties": false

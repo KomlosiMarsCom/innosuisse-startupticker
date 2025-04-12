@@ -1,12 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { DataSourceLoadOptions, ProcessedDataService, RawDataService } from '../../typescript-client';
+import { lastValueFrom } from 'rxjs';
+import { CustomStore, DataSource } from 'devextreme-angular/common/data';
 
 @Component({
   selector: 'app-root',
@@ -14,23 +9,44 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  dataSourceCrunchbase: DataSource<any, any>;
+  storeCrunchbase: CustomStore;
 
-  constructor(private http: HttpClient) {}
+  dataSourceStartupticker: DataSource<any, any>;
+  storeStartupticker: CustomStore;
 
-  ngOnInit() {
-    this.getForecasts();
+  dataSourceStartups: DataSource<any, any>;
+  storeStartups: CustomStore;
+  constructor(private readonly _rawDataService: RawDataService, private readonly _processedDataService: ProcessedDataService) {
+    this.storeCrunchbase = new CustomStore({
+      key: 'id',
+      load: (opt) => {
+        return lastValueFrom(this._rawDataService.gridDataCrunchbasePost(opt as DataSourceLoadOptions))
+      }
+    });
+
+    this.dataSourceCrunchbase = new DataSource(this.storeCrunchbase);
+
+    this.storeStartupticker = new CustomStore({
+      key: 'title',
+      load: (opt) => {
+        return lastValueFrom(this._rawDataService.gridDataStartuptickerPost(opt as DataSourceLoadOptions))
+      }
+    });
+
+    this.dataSourceStartupticker = new DataSource(this.storeStartupticker);
+
+    this.storeStartups = new CustomStore({
+      key: 'id',
+      load: (opt) => {
+        return lastValueFrom(this._processedDataService.gridDataStartupsPost(opt as DataSourceLoadOptions))
+      }
+    });
+
+    this.dataSourceStartups = new DataSource(this.storeStartups);
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  ngOnInit() {
   }
 
   title = 'innosuisse.startupticker.webapp.client';

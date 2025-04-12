@@ -2,12 +2,14 @@
 using DevExtreme.AspNet.Data.ResponseModel;
 using Innosuisse.Startupticker.WebApp.Server.Data;
 using Innosuisse.Startupticker.WebApp.Server.DataBinding;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Innosuisse.Startupticker.WebApp.Server.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     public sealed class RawDataController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
