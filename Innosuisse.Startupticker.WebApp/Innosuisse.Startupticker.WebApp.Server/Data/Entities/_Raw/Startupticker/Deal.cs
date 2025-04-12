@@ -10,7 +10,7 @@
         public string? Url { get; set; }
         public bool Confidential { get; set; }
         public bool AmountConfidential { get; set; }
-        public DateTime DateOfTheFundingRound { get; set; }
+        public DateTime? DateOfTheFundingRound { get; set; }
         public string? Type { get; set; }
         public string? Phase { get; set; }
         public string? Canton { get; set; }

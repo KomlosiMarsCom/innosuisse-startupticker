@@ -1,3 +1,3 @@
-export * from './weatherForecast.service';
-import { WeatherForecastService } from './weatherForecast.service';
-export const APIS = [WeatherForecastService];
+export * from './rawData.service';
+import { RawDataService } from './rawData.service';
+export const APIS = [RawDataService];

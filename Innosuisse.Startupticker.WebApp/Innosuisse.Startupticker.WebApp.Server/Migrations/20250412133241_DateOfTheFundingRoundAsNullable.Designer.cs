@@ -4,6 +4,7 @@ using Innosuisse.Startupticker.WebApp.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Innosuisse.Startupticker.WebApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412133241_DateOfTheFundingRoundAsNullable")]
+    partial class DateOfTheFundingRoundAsNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,97 +32,13 @@ namespace Innosuisse.Startupticker.WebApp.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Canton")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FoundedAt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FoundedYear")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FundingRoundsCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Industry")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsClosed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastFundedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastValuation")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LegalName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Region")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Source")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TotalFunding")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("WasFunded")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Startup", "dbo");
-                });
-
-            modelBuilder.Entity("Innosuisse.Startupticker.WebApp.Server.Data.Entities.StartupFundingRound", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Investors")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("StartupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("Valuation")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StartupId");
-
-                    b.ToTable("StartupFundingRound", "dbo");
+                    b.ToTable("Startups", "dbo");
                 });
 
             modelBuilder.Entity("Innosuisse.Startupticker.WebApp.Server.Data.Entities._Raw.Crunchbase.FundingRound", b =>
@@ -445,17 +364,6 @@ namespace Innosuisse.Startupticker.WebApp.Server.Migrations
                     b.HasIndex("Company");
 
                     b.ToTable("_StartuptickerDeal", "dbo");
-                });
-
-            modelBuilder.Entity("Innosuisse.Startupticker.WebApp.Server.Data.Entities.StartupFundingRound", b =>
-                {
-                    b.HasOne("Innosuisse.Startupticker.WebApp.Server.Data.Entities.Startup", "Startup")
-                        .WithMany()
-                        .HasForeignKey("StartupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Startup");
                 });
 
             modelBuilder.Entity("Innosuisse.Startupticker.WebApp.Server.Data.Entities._Raw.Crunchbase.FundingRound", b =>

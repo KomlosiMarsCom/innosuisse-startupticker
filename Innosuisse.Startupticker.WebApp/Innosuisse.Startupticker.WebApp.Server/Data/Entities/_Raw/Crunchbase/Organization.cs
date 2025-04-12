@@ -43,5 +43,7 @@
         public string? Alias3 { get; set; }
         public string? PrimaryRole { get; set; }
         public int? NumExits { get; set; }
+
+        public IEnumerable<FundingRound>? FundingRounds { get; set; }
     }
 }

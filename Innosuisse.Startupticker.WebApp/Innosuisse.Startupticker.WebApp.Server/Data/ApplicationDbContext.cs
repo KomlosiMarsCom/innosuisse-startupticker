@@ -46,7 +46,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
                 m.HasKey(i => i.Id);
 
                 m.HasOne(o => o.Organization)
-                    .WithMany()
+                    .WithMany(i => i.FundingRounds)
                     .HasForeignKey(o => o.OrganizationId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
@@ -54,7 +54,8 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
             modelBuilder.Entity<Company>(m =>
             {
                 m.ToTable("_StartuptickerCompany");
-                m.HasKey(i => i.Code);
+                m.HasKey(i => i.Title);
+                m.Property(i => i.Title).HasMaxLength(300);
             });
 
             modelBuilder.Entity<Deal>(m =>
@@ -62,8 +63,10 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
                 m.ToTable("_StartuptickerDeal");
                 m.HasKey(i => i.Id);
 
+                m.Property(i => i.Confidential).HasDefaultValue(false);
+                m.Property(i => i.AmountConfidential).HasDefaultValue(false);
                 m.HasOne(o => o.ECompany)
-                    .WithMany()
+                    .WithMany(i => i.Deals)
                     .HasForeignKey(o => o.Company)
                     .OnDelete(DeleteBehavior.Restrict);
             });
