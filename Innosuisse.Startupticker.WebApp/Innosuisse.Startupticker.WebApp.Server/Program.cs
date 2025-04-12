@@ -1,3 +1,7 @@
+using Innosuisse.Startupticker.WebApp.Server.Data;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Innosuisse.Startupticker.WebApp.Server
 {
@@ -12,6 +16,11 @@ namespace Innosuisse.Startupticker.WebApp.Server
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
