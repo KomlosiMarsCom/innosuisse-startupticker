@@ -3,6 +3,8 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
+api/dataFetchAndEnrich.service.ts
+api/processedData.service.ts
 api/rawData.service.ts
 configuration.ts
 encoder.ts
@@ -13,6 +15,8 @@ model/groupingInfo.ts
 model/loadResult.ts
 model/models.ts
 model/sortingInfo.ts
+model/startup.ts
+model/startupFundingRound.ts
 model/summaryInfo.ts
 param.ts
 variables.ts

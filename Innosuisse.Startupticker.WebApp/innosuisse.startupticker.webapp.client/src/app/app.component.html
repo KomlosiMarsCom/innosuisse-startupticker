@@ -1,7 +1,10 @@
+<div style="display:flex; justify-content:space-around; padding: 4px;">
+  <img src="startupticker-logo-animated.gif" width="50" />
+</div>
 <dx-tab-panel [deferRendering]="true" [repaintChangesOnly]="false">
-  <dxi-item title="Organizations (Crunchbase)">
+  <dxi-item title="Startups (Processed data)">
     <div>
-      <dx-data-grid [dataSource]="dataSource"
+      <dx-data-grid [dataSource]="dataSourceStartups"
                     keyExpr="id"
                     [columnHidingEnabled]="true"
                     [columnAutoWidth]="true"
@@ -12,7 +15,47 @@
                     [allowColumnResizing]="true"
                     [showColumnLines]="true"
                     columnResizingMode="widget"
-                    height="calc(100vh - 100px)"
+                    height="calc(100vh - 170px)"
+                    width="100%">
+
+        <dxo-search-panel [visible]="true"
+                          [width]="200"></dxo-search-panel>
+
+        <dxo-paging [pageSize]="50"></dxo-paging>
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+        <dxo-pager [visible]="true"
+                   [displayMode]="'compact'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true"></dxo-pager>
+
+        <dxo-master-detail [enabled]="true"
+                           template="masterDetail"></dxo-master-detail>
+
+        <div *dxTemplate="let item of 'masterDetail'">
+          <app-detail-view [id]="item.data.id"></app-detail-view>
+        </div>
+      </dx-data-grid>
+    </div>
+  </dxi-item>
+  <dxi-item title="Organizations (Crunchbase - Raw data)">
+    <div>
+      <dx-data-grid [dataSource]="dataSourceCrunchbase"
+                    keyExpr="id"
+                    [columnHidingEnabled]="true"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true"
+                    [remoteOperations]="true"
+                    [showBorders]="true"
+                    [allowColumnReordering]="true"
+                    [allowColumnResizing]="true"
+                    [showColumnLines]="true"
+                    columnResizingMode="widget"
+                    height="calc(100vh - 200px)"
                     width="100%">
 
         <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
@@ -34,9 +77,9 @@
       </dx-data-grid>
     </div>
   </dxi-item>
-  <dxi-item title="Companies (Startupticker)">
+  <dxi-item title="Companies (Startupticker - Raw data)">
     <div>
-      <dx-data-grid [dataSource]="'[]'"
+      <dx-data-grid [dataSource]="dataSourceStartupticker"
                     keyExpr="id"
                     [columnHidingEnabled]="true"
                     [columnAutoWidth]="true"
@@ -47,7 +90,7 @@
                     [allowColumnResizing]="true"
                     [showColumnLines]="true"
                     columnResizingMode="widget"
-                    height="calc(100vh - 100px)"
+                    height="calc(100vh - 200px)"
                     width="100%">
 
         <dxo-column-fixing [enabled]="true"></dxo-column-fixing>

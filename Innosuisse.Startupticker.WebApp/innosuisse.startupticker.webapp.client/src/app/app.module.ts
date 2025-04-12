@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { Configuration } from '../../typescript-client';
 import { environment } from '../environment/environment';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DetailViewComponent } from './detail-view/detail-view/detail-view.component';
 
 const apiConfiguration = new Configuration({ basePath: environment.apiBasePath, withCredentials: true });
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DetailViewComponent
   ],
   imports: [
     BrowserModule,
