@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Innosuisse.Startupticker.WebApp/innosuisse.startupticker.webapp.client/obj/Debug
+/Innosuisse.Startupticker.WebApp/Innosuisse.Startupticker.WebApp.Server/bin/Debug/net9.0
+/Innosuisse.Startupticker.WebApp/Innosuisse.Startupticker.WebApp.Server/obj
