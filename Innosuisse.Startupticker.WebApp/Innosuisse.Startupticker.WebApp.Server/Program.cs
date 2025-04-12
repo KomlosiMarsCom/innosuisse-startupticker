@@ -1,3 +1,5 @@
+using Innosuisse.Startupticker.WebApp.Server.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 namespace Innosuisse.Startupticker.WebApp.Server
@@ -27,6 +29,11 @@ namespace Innosuisse.Startupticker.WebApp.Server
                 c.UseInlineDefinitionsForEnums();
             });
             builder.Services.AddProblemDetails();
+
+            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddCors(options =>
             {

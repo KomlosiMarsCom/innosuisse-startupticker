@@ -9,7 +9,7 @@
         public string? Canton { get; set; }
         public string? SpinOffs { get; set; }
         public string? City { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public string? Highlights { get; set; }
         public string? GenderCeo { get; set; }
         public bool Oob { get; set; }
