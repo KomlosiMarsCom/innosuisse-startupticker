@@ -1,7 +1,4 @@
-using Innosuisse.Startupticker.WebApp.Server.Data;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace Innosuisse.Startupticker.WebApp.Server
 {
@@ -11,32 +8,68 @@ namespace Innosuisse.Startupticker.WebApp.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Configuration
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-
-            builder.Services.AddDbContextPool<ApplicationDbContext>((options) =>
+            if (builder.Environment.IsDevelopment())
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                builder.Configuration
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+            }
+
+            builder.Services.AddLogging();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.UseInlineDefinitionsForEnums();
             });
+            builder.Services.AddProblemDetails();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                    builder
+                    .SetIsOriginAllowed((x) =>
+                    {
+                        return true;
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    );
+            });
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
-
-            app.UseDefaultFiles();
-            app.MapStaticAssets();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseSwagger();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseCors();
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
