@@ -15,5 +15,7 @@
         public bool Oob { get; set; }
         public bool Funded { get; set; }
         public string? Comment { get; set; }
+
+        public IEnumerable<Deal>? Deals { get; set; }
     }
 }

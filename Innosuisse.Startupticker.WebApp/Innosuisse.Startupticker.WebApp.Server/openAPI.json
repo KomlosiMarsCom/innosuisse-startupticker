@@ -5,38 +5,95 @@
     "version": "1.0"
   },
   "paths": {
-    "/WeatherForecast": {
-      "get": {
+    "/grid-data-startupticker": {
+      "post": {
         "tags": [
-          "WeatherForecast"
+          "RawData"
         ],
-        "operationId": "GetWeatherForecast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
+                  "$ref": "#/components/schemas/LoadResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
+                  "$ref": "#/components/schemas/LoadResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grid-data-crunchbase": {
+      "post": {
+        "tags": [
+          "RawData"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceLoadOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadResult"
                 }
               }
             }
@@ -47,23 +104,185 @@
   },
   "components": {
     "schemas": {
-      "WeatherForecast": {
+      "DataSourceLoadOptions": {
         "type": "object",
         "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
+          "requireTotalCount": {
+            "type": "boolean"
           },
-          "temperatureC": {
+          "requireGroupCount": {
+            "type": "boolean"
+          },
+          "isCountQuery": {
+            "type": "boolean"
+          },
+          "isSummaryQuery": {
+            "type": "boolean"
+          },
+          "skip": {
             "type": "integer",
             "format": "int32"
           },
-          "temperatureF": {
+          "take": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SortingInfo"
+            },
+            "nullable": true
+          },
+          "group": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupingInfo"
+            },
+            "nullable": true
+          },
+          "filter": {
+            "type": "array",
+            "items": { },
+            "nullable": true
+          },
+          "totalSummary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SummaryInfo"
+            },
+            "nullable": true
+          },
+          "groupSummary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SummaryInfo"
+            },
+            "nullable": true
+          },
+          "select": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "preSelect": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "remoteSelect": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "remoteGrouping": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "expandLinqSumType": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "primaryKey": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "defaultSort": {
+            "type": "string",
+            "nullable": true
+          },
+          "stringToLower": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "paginateViaPrimaryKey": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sortByPrimaryKey": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "allowAsyncOverSync": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupingInfo": {
+        "type": "object",
+        "properties": {
+          "selector": {
+            "type": "string",
+            "nullable": true
+          },
+          "desc": {
+            "type": "boolean"
+          },
+          "groupInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "isExpanded": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoadResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { },
+            "nullable": true
+          },
+          "totalCount": {
             "type": "integer",
             "format": "int32",
-            "readOnly": true
+            "default": -1
+          },
+          "groupCount": {
+            "type": "integer",
+            "format": "int32",
+            "default": -1
           },
           "summary": {
+            "type": "array",
+            "items": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SortingInfo": {
+        "type": "object",
+        "properties": {
+          "selector": {
+            "type": "string",
+            "nullable": true
+          },
+          "desc": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SummaryInfo": {
+        "type": "object",
+        "properties": {
+          "selector": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryType": {
             "type": "string",
             "nullable": true
           }
