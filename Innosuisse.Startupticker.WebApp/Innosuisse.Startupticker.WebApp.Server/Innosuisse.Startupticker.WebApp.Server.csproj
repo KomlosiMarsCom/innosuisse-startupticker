@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Entities\_Raw\Startupticker\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
