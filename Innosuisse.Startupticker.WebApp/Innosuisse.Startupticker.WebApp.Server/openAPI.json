@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/test-ai": {
+      "post": {
+        "tags": [
+          "DataFetchAndEnrich"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/sync-and-enrich-data": {
       "post": {
         "tags": [
@@ -107,6 +119,38 @@
                 "schema": {
                   "$ref": "#/components/schemas/LoadResult"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": [
+          "SemanticSearch"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": { }
+              },
+              "application/json": {
+                "schema": { }
+              },
+              "text/json": {
+                "schema": { }
               }
             }
           }

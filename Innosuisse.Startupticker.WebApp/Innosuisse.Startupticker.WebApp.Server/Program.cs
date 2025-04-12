@@ -1,5 +1,8 @@
+using Azure;
 using Innosuisse.Startupticker.WebApp.Server.Data;
+using Innosuisse.Startupticker.WebApp.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using OpenAI;
 using System.Text.Json.Serialization;
 
 namespace Innosuisse.Startupticker.WebApp.Server
@@ -49,6 +52,8 @@ namespace Innosuisse.Startupticker.WebApp.Server
                     );
             });
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddSingleton<OpenAIService>();
 
             var app = builder.Build();
 

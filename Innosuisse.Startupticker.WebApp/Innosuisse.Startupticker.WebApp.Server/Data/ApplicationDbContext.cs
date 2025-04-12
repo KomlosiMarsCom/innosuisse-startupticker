@@ -2,6 +2,7 @@
 using Innosuisse.Startupticker.WebApp.Server.Data.Entities._Raw.Crunchbase;
 using Innosuisse.Startupticker.WebApp.Server.Data.Entities._Raw.Startupticker;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Innosuisse.Startupticker.WebApp.Server.Data
 {
@@ -75,6 +76,13 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
             {
                 m.ToTable("Startup");
                 m.HasKey(i => i.Id);
+
+                m.Property(c => c.Embedding)
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null), // Serialize float[] to JSON
+                        v => JsonSerializer.Deserialize<float[]>(v, (JsonSerializerOptions?)null)! // Deserialize JSON to float[]
+                    )
+                    .HasColumnType("nvarchar(max)"); // Use nvarchar(max) to store JSON in SQL Server
             });
 
             modelBuilder.Entity<StartupFundingRound>(m =>
@@ -84,6 +92,18 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
 
                 m.HasOne(o => o.Startup)
                    .WithMany(i => i.StartupsFundingRounds)
+                   .IsRequired()
+                   .HasForeignKey(o => o.StartupId)
+                   .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<StartupTag>(m =>
+            {
+                m.ToTable("StartupTag");
+                m.HasKey(i => new { i.StartupId, i.Name });
+
+                m.HasOne(o => o.Startup)
+                   .WithMany(i => i.Tags)
                    .IsRequired()
                    .HasForeignKey(o => o.StartupId)
                    .OnDelete(DeleteBehavior.Restrict);

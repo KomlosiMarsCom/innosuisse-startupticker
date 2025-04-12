@@ -1,7 +1,9 @@
 ﻿using Innosuisse.Startupticker.WebApp.Server.Data;
 using Innosuisse.Startupticker.WebApp.Server.Data.Entities;
+using Innosuisse.Startupticker.WebApp.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HtmlAgilityPack;
 
 namespace Innosuisse.Startupticker.WebApp.Server.Controllers
 {
@@ -9,10 +11,20 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
     public sealed class DataFetchAndEnrichController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly OpenAIService _openAIService;
 
-        public DataFetchAndEnrichController(ApplicationDbContext dbContext)
+        public DataFetchAndEnrichController(ApplicationDbContext dbContext, OpenAIService openAIService)
         {
             this._dbContext = dbContext;
+            this._openAIService = openAIService;
+        }
+
+        [HttpPost("test-ai")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> TestAi(CancellationToken cancellationToken)
+        {
+            //test
+            return NoContent();
         }
 
         [HttpPost("sync-and-enrich-data")]
@@ -20,26 +32,22 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
         public async Task<ActionResult> SyncAndEnrichData(CancellationToken cancellationToken)
         {
             await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM StartupFundingRound");
+            await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM StartupTag");
             await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM Startup");
 
             var startuptickerCompanies = await _dbContext.Companies
+                .Where(i => i.Industry != "" && i.Industry != null)
                 .Include(i => i.Deals)
                 .AsNoTracking()
                 .AsSplitQuery()
-                .ToListAsync(cancellationToken);
-
-            var startuptickerDeals = await _dbContext.Deals
-                .AsNoTracking()
+                .Take(10)
                 .ToListAsync(cancellationToken);
 
             var crunchbaseOrganizations = await _dbContext.Organizations
                 .Include(i => i.FundingRounds)
                 .AsNoTracking()
                 .AsSplitQuery()
-                .ToListAsync(cancellationToken);
-
-            var crunchbaseFundingRounds = await _dbContext.FundingRounds
-                .AsNoTracking()
+                .Take(10)
                 .ToListAsync(cancellationToken);
 
             var newStartups = new List<Startup>();
@@ -55,7 +63,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
 
                 startup.Description = null;
                 startup.LegalName = startuptickerCompany.Title;
-                startup.Industry = startuptickerCompany.Industry; // + TODO
+                startup.Industry = startuptickerCompany.Industry;
                 startup.CountryCode = "CHE";
                 startup.Country = "Switzerland";
                 startup.Canton = startuptickerCompany.Canton;
@@ -71,6 +79,16 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                 startup.IsClosed = startuptickerCompany.Oob;
                 startup.ClosedAt = null;
                 startup.StartupsFundingRounds = new List<StartupFundingRound>();
+                startup.Tags = new List<StartupTag>();
+
+                // AI Embeddings
+                startup.Embedding = await _openAIService.GetEmbeddingAsync(GetInputMessage(
+                    $"Name: {startup.Name}", 
+                    $"Industry: {startup.Industry}", 
+                    $"CountryCode: {startup.CountryCode}"
+                    //$"City: {startup.City}", 
+                    //$"Canton: {startup.Canton}"
+                ));
 
                 if (startuptickerCompany.Deals != null)
                 {
@@ -89,6 +107,16 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                         startup.StartupsFundingRounds.Add(startupFundingRound);
                     }
                 }
+
+                // AI generated tags
+                startup.Tags = (await GetTagsAsync(
+                    $"Title: {startuptickerCompany.Title}",
+                    $"Industry: {startuptickerCompany.Industry}"))
+                    .Select(i => new StartupTag
+                    {
+                        StartupId = startup.Id,
+                        Name = i
+                    }).ToList();
             }
             
             foreach (var crunchbaseOrganization in crunchbaseOrganizations)
@@ -103,7 +131,13 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
 
                 startup.Description = null;
                 startup.LegalName = crunchbaseOrganization.Name;
-                startup.Industry = null; // TODO 
+
+                // AI categorization of industry
+                startup.Industry = await GetIndustryAsync(
+                    crunchbaseOrganization.Name, 
+                    crunchbaseOrganization.ShortDescription, 
+                    crunchbaseOrganization.CategoryList, 
+                    crunchbaseOrganization.CategoryGroupsList);
                 startup.CountryCode = crunchbaseOrganization.CountryCode;
                 startup.Country = null;
                 startup.Canton = null;
@@ -119,6 +153,19 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                 startup.IsClosed = crunchbaseOrganization.ClosedOn.HasValue;
                 startup.ClosedAt = crunchbaseOrganization.ClosedOn;
                 startup.StartupsFundingRounds = new List<StartupFundingRound>();
+                startup.Tags = new List<StartupTag>();
+
+                // AI Embeddings
+                startup.Embedding = await _openAIService.GetEmbeddingAsync(GetInputMessage(
+                    $"Name: {startup.Name}", 
+                    $"Industry: {startup.Industry}", 
+                    $"CountryCode: {startup.CountryCode}"
+                    //$"City: {startup.City}", 
+                    //$"Region: {startup.Region}", 
+                    //$"ShortDescription: {crunchbaseOrganization.ShortDescription}",
+                    //$"CategoryList: {crunchbaseOrganization.CategoryList}",
+                    //$"CategoryGroupsList: {crunchbaseOrganization.CategoryGroupsList}")
+                ));
 
                 if (crunchbaseOrganization.FundingRounds != null)
                 {
@@ -137,11 +184,53 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                         startup.StartupsFundingRounds.Add(startupFundingRound);
                     }
                 }
+
+                // AI generated tags
+                startup.Tags = (await GetTagsAsync(
+                    $"Name: {crunchbaseOrganization.Name}",
+                    $"ShortDescription: {crunchbaseOrganization.ShortDescription}",
+                    $"CategoryList: {crunchbaseOrganization.CategoryList}",
+                    $"CategoryGroupsList: {crunchbaseOrganization.CategoryGroupsList}"))
+                    .Select(i => new StartupTag
+                    {
+                        StartupId = startup.Id,
+                        Name = CapitalizeFirstLetter(i)
+                    }).ToList();
             }
             await _dbContext.Startups.AddRangeAsync(newStartups);
             await _dbContext.SaveChangesAsync();
-
             return NoContent();
+        }
+
+        private async Task<string> GetIndustryAsync(params string?[] inputs)
+        {
+            return await _openAIService.GenerateChatResponseAsync(
+                "Extract industry of company based on description and categories. Please choose just one word.",
+                GetInputMessage(inputs)
+            );
+        }
+
+        private async Task<List<string>> GetTagsAsync(params string?[] inputs)
+        {
+            var result = await _openAIService.GenerateChatResponseAsync(
+                "Extract 3 to 5 relevant tags from this company with industry definition as comma separated list of tags.",
+                GetInputMessage(inputs)
+            );
+
+            return result.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
+
+        private string GetInputMessage(params string?[] inputs)
+        {
+            return string.Join(" | ", inputs);
+        }
+
+        public static string CapitalizeFirstLetter(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return char.ToUpper(input[0]) + input.Substring(1);
         }
     }
 }

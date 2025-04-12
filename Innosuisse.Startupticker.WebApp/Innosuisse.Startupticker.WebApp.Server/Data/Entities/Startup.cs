@@ -27,7 +27,10 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data.Entities
         public bool IsClosed { get; set; }
         public DateTime? ClosedAt { get; set; }
 
+        public float[]? Embedding { get; set; }
+
         // nav props
         public ICollection<StartupFundingRound>? StartupsFundingRounds { get; set; }
+        public ICollection<StartupTag>? Tags { get; set; }
     }
 }
