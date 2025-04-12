@@ -7,7 +7,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data.Entities
         public required Guid Id { get; set; }
         public required string Source { get; set; }
         public required string Name { get; set; }
-        public required string Description { get; set; }
+        public string? Description { get; set; }
         public string? LegalName { get; set; }
         public string? Industry { get; set; }
         public string? CountryCode { get; set; }
@@ -15,16 +15,19 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data.Entities
         public string? Canton { get; set; }
         public string? Region { get; set; }
         public string? City { get; set; }
-        public string? FoundedAt { get; set; }
-        public string? FoundedYear { get; set; }
+        public DateTime? FoundedOn { get; set; }
+        public int? FoundedYear { get; set; }
 
         public bool WasFunded { get; set; }
-        public int? FundingRoundsCount { get; set; }
-        public int? TotalFunding { get; set; }
-        public int? LastValuation { get; set; }
-        public DateTime? LastFundedAt { get; set; }
+        public decimal? FundingRoundsCount { get; set; }
+        public decimal? TotalFunding { get; set; }
+        public decimal? LastValuation { get; set; }
+        public DateTime? LastFundedOn { get; set; }
         
         public bool IsClosed { get; set; }
         public DateTime? ClosedAt { get; set; }
+
+        // nav props
+        public ICollection<StartupFundingRound>? StartupsFundingRounds { get; set; }
     }
 }

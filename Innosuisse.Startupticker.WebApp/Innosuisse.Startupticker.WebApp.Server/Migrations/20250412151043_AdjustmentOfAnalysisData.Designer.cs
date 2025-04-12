@@ -4,6 +4,7 @@ using Innosuisse.Startupticker.WebApp.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Innosuisse.Startupticker.WebApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412151043_AdjustmentOfAnalysisData")]
+    partial class AdjustmentOfAnalysisData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,8 +50,8 @@ namespace Innosuisse.Startupticker.WebApp.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("FoundedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("FoundedAt")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("FoundedYear")
                         .HasColumnType("int");
@@ -62,7 +65,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Migrations
                     b.Property<bool>("IsClosed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("LastFundedOn")
+                    b.Property<DateTime?>("LastFundedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("LastValuation")
@@ -323,14 +326,14 @@ namespace Innosuisse.Startupticker.WebApp.Server.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("TotalFunding")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("TotalFunding")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TotalFundingCurrencyCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("TotalFundingUsd")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("TotalFundingUsd")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TwitterUrl")
                         .HasColumnType("nvarchar(max)");

@@ -83,7 +83,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
                 m.HasKey(i => i.Id);
 
                 m.HasOne(o => o.Startup)
-                   .WithMany()
+                   .WithMany(i => i.StartupsFundingRounds)
                    .IsRequired()
                    .HasForeignKey(o => o.StartupId)
                    .OnDelete(DeleteBehavior.Restrict);

@@ -25,8 +25,8 @@
         public string? CategoryList { get; set; }
         public string? CategoryGroupsList { get; set; }
         public int? NumFundingRounds { get; set; }
-        public string? TotalFundingUsd { get; set; }
-        public string? TotalFunding { get; set; }
+        public decimal? TotalFundingUsd { get; set; }
+        public decimal? TotalFunding { get; set; }
         public string? TotalFundingCurrencyCode { get; set; }
         public DateTime? FoundedOn { get; set; }
         public DateTime? LastFundingOn { get; set; }

@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/sync-and-enrich-data": {
+      "post": {
+        "tags": [
+          "DataFetchAndEnrich"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/grid-data-startupticker": {
       "post": {
         "tags": [
