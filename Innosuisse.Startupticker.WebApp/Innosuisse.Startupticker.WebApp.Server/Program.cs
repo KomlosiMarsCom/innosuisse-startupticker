@@ -1,5 +1,6 @@
 using Innosuisse.Startupticker.WebApp.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Text.Json.Serialization;
 
 namespace Innosuisse.Startupticker.WebApp.Server
@@ -10,8 +11,8 @@ namespace Innosuisse.Startupticker.WebApp.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+            //builder.Configuration
+            //    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
             if (builder.Environment.IsDevelopment())
             {
@@ -20,6 +21,7 @@ namespace Innosuisse.Startupticker.WebApp.Server
             }
 
             builder.Services.AddLogging();
+            builder.Services.AddSerilog();
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -57,11 +59,17 @@ namespace Innosuisse.Startupticker.WebApp.Server
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                Log.Logger = new LoggerConfiguration()
+                   .WriteTo.Console()
+                   .CreateLogger();
             }
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                Log.Logger =  new LoggerConfiguration()
+                    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Hour)
+                    .CreateLogger();
             }
 
             app.UseDefaultFiles();
