@@ -21,6 +21,9 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
 
         public required DbSet<Deal> Deals { get; set; } = null!;
 
+        public required DbSet<StartupFundingRound> StartupsFundingRounds { get; set; } = null!;
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,6 +66,24 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
                     .WithMany()
                     .HasForeignKey(o => o.Company)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Startup>(m =>
+            {
+                m.ToTable("Startup");
+                m.HasKey(i => i.Id);
+            });
+
+            modelBuilder.Entity<StartupFundingRound>(m =>
+            {
+                m.ToTable("StartupFundingRound");
+                m.HasKey(i => i.Id);
+
+                m.HasOne(o => o.Startup)
+                   .WithMany()
+                   .IsRequired()
+                   .HasForeignKey(o => o.StartupId)
+                   .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
