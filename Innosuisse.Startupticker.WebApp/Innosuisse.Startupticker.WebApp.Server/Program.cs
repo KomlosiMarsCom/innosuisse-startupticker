@@ -72,7 +72,7 @@ namespace Innosuisse.Startupticker.WebApp.Server
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-                Log.Logger =  new LoggerConfiguration()
+                Log.Logger = new LoggerConfiguration()
                     .WriteTo.File("log.txt", rollingInterval: RollingInterval.Hour)
                     .CreateLogger();
             }
@@ -82,10 +82,10 @@ namespace Innosuisse.Startupticker.WebApp.Server
             app.UseSwagger();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwaggerUI();
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            app.UseSwaggerUI();
+            //}
 
             app.UseHttpsRedirection();
 

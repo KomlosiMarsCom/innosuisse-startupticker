@@ -12,7 +12,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly OpenAIService _openAIService;
-        private const int _dataSetSize = 10;
+        private const int _dataSetSize = 100;
 
         public DataFetchAndEnrichController(ApplicationDbContext dbContext, OpenAIService openAIService)
         {
