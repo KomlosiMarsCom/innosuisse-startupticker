@@ -7,6 +7,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
     public class OpenAIService
     {
         private const string _apikey = "<<apikey>>";
+        private static readonly Dictionary<string, List<ChatMessage>> _conversationHistory = new();
 
         public OpenAIService(IConfiguration config)
         { }
@@ -37,13 +38,23 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
         /// </summary>
         /// <param name="input">The input text to extract tags from.</param>
         /// <returns>An array of strings representing the extracted tags.</returns>
-        public async Task<string> GenerateChatResponseAsync(string systemPrompt, string input)
+        public async Task<string> GenerateChatResponseAsync(string sessionId, string systemPrompt, string input, bool useHistory)
         {
-            var chatMessages = new List<ChatMessage>
+            var chatHistory = new List<ChatMessage>();
+            if (useHistory) 
             {
-                ChatMessage.CreateSystemMessage(systemPrompt),
-                ChatMessage.CreateUserMessage(input)
-            };
+                if (!_conversationHistory.TryGetValue(sessionId, out chatHistory))
+                {
+                    chatHistory = new List<ChatMessage>();
+                }
+            }
+
+            var chatMessages = new List<ChatMessage>();
+            var systemMsg = ChatMessage.CreateSystemMessage(systemPrompt);
+            var userMsg = ChatMessage.CreateUserMessage(input);
+            chatMessages.Add(systemMsg);
+            chatMessages.AddRange(chatHistory);
+            chatMessages.Add(userMsg);
 
             var endpoint = new Uri("https://swisshackstest.openai.azure.com/");
             var deploymentName = "gpt-35-turbo";
@@ -61,6 +72,13 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
             var chatCompletion = response.Value;
             var content = chatCompletion.Content;
             var strContent = content[0].Text;
+            
+            if (useHistory) 
+            {
+                chatMessages.Add(ChatMessage.CreateAssistantMessage(strContent));
+                _conversationHistory[sessionId] = chatMessages.Skip(1).ToList();
+            }
+
             return strContent;
         }
     } 

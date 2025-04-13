@@ -1,0 +1,11 @@
+<h3>AI adviser</h3>
+
+<div class="demo-container">
+  <dx-chat [user]="currentUser"
+           [items]="messages"
+           [typingUsers]="userChatTypingUsers"
+           (onMessageEntered)="onMessageEntered($event)"
+           (onTypingStart)="userChatOnTypingStart()"
+           (onTypingEnd)="userChatOnTypingEnd()">
+  </dx-chat>
+</div>

@@ -1,4 +1,4 @@
-﻿:host {
+:host {
     max-width: 1280px;
     padding: 2rem;
     text-align: center;
@@ -11,4 +11,28 @@ th, td {
 
 table {
     margin: 0 auto;
+}
+
+
+.app-layout {
+  display: flex;
+}
+
+.left-panel {
+  width: 350px;
+  border-right: 1px solid #ddd;
+  background-color: #f9f9f9;
+  padding: 8px;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  padding: 16px;
+  flex-grow: 1;
+  background-color: #fff;
 }

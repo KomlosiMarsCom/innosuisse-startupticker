@@ -12,11 +12,12 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly OpenAIService _openAIService;
+        private const int _dataSetSize = 10;
 
         public DataFetchAndEnrichController(ApplicationDbContext dbContext, OpenAIService openAIService)
         {
-            this._dbContext = dbContext;
-            this._openAIService = openAIService;
+            _dbContext = dbContext;
+            _openAIService = openAIService;
         }
 
         [HttpPost("test-ai")]
@@ -40,14 +41,14 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                 .Include(i => i.Deals)
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Take(10)
+                .Take(_dataSetSize)
                 .ToListAsync(cancellationToken);
 
             var crunchbaseOrganizations = await _dbContext.Organizations
                 .Include(i => i.FundingRounds)
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Take(10)
+                .Take(_dataSetSize)
                 .ToListAsync(cancellationToken);
 
             var newStartups = new List<Startup>();
@@ -204,17 +205,19 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
 
         private async Task<string> GetIndustryAsync(params string?[] inputs)
         {
-            return await _openAIService.GenerateChatResponseAsync(
+            return await _openAIService.GenerateChatResponseAsync(Guid.NewGuid().ToString(),
                 "Extract industry of company based on description and categories. Please choose just one word.",
-                GetInputMessage(inputs)
+                GetInputMessage(inputs),
+                false
             );
         }
 
         private async Task<List<string>> GetTagsAsync(params string?[] inputs)
         {
-            var result = await _openAIService.GenerateChatResponseAsync(
+            var result = await _openAIService.GenerateChatResponseAsync(Guid.NewGuid().ToString(),
                 "Extract 3 to 5 relevant tags from this company with industry definition as comma separated list of tags.",
-                GetInputMessage(inputs)
+                GetInputMessage(inputs),
+                false
             );
 
             return result.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();

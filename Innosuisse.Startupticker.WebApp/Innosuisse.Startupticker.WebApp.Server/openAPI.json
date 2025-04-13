@@ -29,6 +29,54 @@
         }
       }
     },
+    "/ask": {
+      "post": {
+        "tags": [
+          "ChatBot"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatBotMessage"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatBotMessage"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatBotMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/grid-data-startups": {
       "post": {
         "tags": [
@@ -256,6 +304,24 @@
   },
   "components": {
     "schemas": {
+      "ChatBotMessage": {
+        "required": [
+          "sessionId",
+          "userMessage"
+        ],
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DataSourceLoadOptions": {
         "type": "object",
         "properties": {
@@ -520,10 +586,25 @@
             "format": "date-time",
             "nullable": true
           },
+          "embedding": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "nullable": true
+          },
           "startupsFundingRounds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/StartupFundingRound"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StartupTag"
             },
             "nullable": true
           }
@@ -565,6 +646,27 @@
           "date": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "startup": {
+            "$ref": "#/components/schemas/Startup"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StartupTag": {
+        "required": [
+          "name",
+          "startupId"
+        ],
+        "type": "object",
+        "properties": {
+          "startupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
             "nullable": true
           },
           "startup": {

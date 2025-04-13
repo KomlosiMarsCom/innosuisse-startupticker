@@ -3,13 +3,16 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
+api/chatBot.service.ts
 api/dataFetchAndEnrich.service.ts
 api/processedData.service.ts
 api/rawData.service.ts
+api/semanticSearch.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/chatBotMessage.ts
 model/dataSourceLoadOptions.ts
 model/groupingInfo.ts
 model/loadResult.ts
@@ -17,6 +20,7 @@ model/models.ts
 model/sortingInfo.ts
 model/startup.ts
 model/startupFundingRound.ts
+model/startupTag.ts
 model/summaryInfo.ts
 param.ts
 variables.ts

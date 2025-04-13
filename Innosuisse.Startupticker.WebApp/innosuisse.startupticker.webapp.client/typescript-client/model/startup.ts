@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { StartupFundingRound } from './startupFundingRound';
+import { StartupTag } from './startupTag';
 
 
 export interface Startup { 
@@ -31,6 +32,8 @@ export interface Startup {
     lastFundedOn?: string | null;
     isClosed?: boolean;
     closedAt?: string | null;
+    embedding?: Array<number> | null;
     startupsFundingRounds?: Array<StartupFundingRound> | null;
+    tags?: Array<StartupTag> | null;
 }
 

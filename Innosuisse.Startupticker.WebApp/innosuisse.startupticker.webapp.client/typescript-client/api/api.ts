@@ -1,7 +1,11 @@
+export * from './chatBot.service';
+import { ChatBotService } from './chatBot.service';
 export * from './dataFetchAndEnrich.service';
 import { DataFetchAndEnrichService } from './dataFetchAndEnrich.service';
 export * from './processedData.service';
 import { ProcessedDataService } from './processedData.service';
 export * from './rawData.service';
 import { RawDataService } from './rawData.service';
-export const APIS = [DataFetchAndEnrichService, ProcessedDataService, RawDataService];
+export * from './semanticSearch.service';
+import { SemanticSearchService } from './semanticSearch.service';
+export const APIS = [ChatBotService, DataFetchAndEnrichService, ProcessedDataService, RawDataService, SemanticSearchService];
