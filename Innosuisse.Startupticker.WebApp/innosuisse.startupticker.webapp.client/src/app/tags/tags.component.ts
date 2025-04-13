@@ -29,6 +29,11 @@ export class TagsComponent {
     };
   }
 
+  getTagId(tag: string): string {
+    const cleanTag = tag.replace(/[^a-zA-Z0-9_-]/g, '-'); // Replace invalid chars with -
+    return `tag-${cleanTag}-${this.id}`;
+  }
+
   tagColorMap(tag: string): { bg: string; text: string } {
     const hash = [...tag].reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const colorList = [
