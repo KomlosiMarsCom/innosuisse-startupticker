@@ -25,6 +25,16 @@
 
             <dxo-toolbar>
               <dxi-item name="groupPanel"></dxi-item>
+              <dxi-item name="semanticSearch">
+                <dx-text-box [(value)]="semanticSearchText"
+                             placeholder="Semantics Search powered by AI..."
+                             [showClearButton]="true"
+                             mode="search"
+                             stylingMode="outlined"
+                             width="300"
+                             (onValueChanged)="onSemanticSearchChanged($event)">
+                </dx-text-box>
+              </dxi-item>
               <dxi-item name="searchPanel"></dxi-item>
             </dxo-toolbar>
 

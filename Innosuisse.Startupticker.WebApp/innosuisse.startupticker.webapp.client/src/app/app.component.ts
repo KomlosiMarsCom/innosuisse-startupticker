@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataSourceLoadOptions, ProcessedDataService, RawDataService } from '../../typescript-client';
+import { DataSourceLoadOptions, ProcessedDataService, RawDataService, SemanticSearchService } from '../../typescript-client';
 import { lastValueFrom } from 'rxjs';
 import { CustomStore, DataSource } from 'devextreme-angular/common/data';
 
@@ -9,6 +9,9 @@ import { CustomStore, DataSource } from 'devextreme-angular/common/data';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  semanticSearchText: string = "";
+  semanticSearchResults: any[] = [];
+
   dataSourceCrunchbase: DataSource<any, any>;
   storeCrunchbase: CustomStore;
 
@@ -28,7 +31,10 @@ export class AppComponent implements OnInit {
   startupsByIndustry: any[] = [];
   industrySeries: { name: string, valueField: string }[] = [];
 
-  constructor(private readonly _rawDataService: RawDataService, private readonly _processedDataService: ProcessedDataService) {
+  constructor(private readonly _rawDataService: RawDataService,
+    private readonly _processedDataService: ProcessedDataService,
+    private readonly _semanticSearchService: SemanticSearchService,
+  ) {
     this.storeCrunchbase = new CustomStore({
       key: 'id',
       load: (opt) => {
@@ -41,6 +47,7 @@ export class AppComponent implements OnInit {
     this.storeStartupticker = new CustomStore({
       key: 'title',
       load: (opt) => {
+        opt.filter = opt.filter ? opt.filter : [];
         return lastValueFrom(this._rawDataService.gridDataStartuptickerPost(opt as DataSourceLoadOptions))
       }
     });
@@ -50,6 +57,14 @@ export class AppComponent implements OnInit {
     this.storeStartups = new CustomStore({
       key: 'id',
       load: (opt) => {
+        if (this.semanticSearchResults != null && this.semanticSearchResults.length > 0) {
+
+          let filters = [];
+          this.semanticSearchResults.forEach((item: any) => {
+            filters.push(['id', '=', item.id], 'or');
+          })
+          opt.filter = filters;
+        }
         return lastValueFrom(this._processedDataService.gridDataStartupsPost(opt as DataSourceLoadOptions))
       }
     });
@@ -87,4 +102,16 @@ export class AppComponent implements OnInit {
   }
 
   title = 'innosuisse.startupticker.webapp.client';
+
+  onSemanticSearchChanged(e: any) {
+    if (e.value) {
+      this._semanticSearchService.searchGet(e.value).subscribe(data => {
+        this.semanticSearchResults = data;
+        this.dataSourceStartups.reload();
+      });
+    } else {
+      this.semanticSearchResults = null;
+      this.dataSourceStartups.reload();
+    }
+  }
 }

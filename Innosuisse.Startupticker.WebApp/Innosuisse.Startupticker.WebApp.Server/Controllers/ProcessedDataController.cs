@@ -24,7 +24,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoadResult))]
         public async Task<ActionResult> GetAll([FromBody] DataSourceLoadOptions loadOptions, CancellationToken cancellationToken)
         {
-            var result = await DataSourceLoader.LoadAsync(dbContext.Startups.AsNoTracking().AsSplitQuery(), loadOptions, cancellationToken);
+           var result = await DataSourceLoader.LoadAsync(dbContext.Startups.AsNoTracking().AsSplitQuery(), loadOptions, cancellationToken);
             return Ok(result);
         }
 

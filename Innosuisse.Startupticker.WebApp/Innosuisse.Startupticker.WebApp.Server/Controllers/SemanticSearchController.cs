@@ -37,7 +37,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
                     Similarity = VectorUtils.CosineSimilarity(queryEmbedding, c.Embedding!)
                 })
                 .OrderByDescending(r => r.Similarity)
-                .Take(20);
+                .Take(10);
 
             return Ok(results);
         }
