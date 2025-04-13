@@ -10,6 +10,7 @@ export class DetailViewComponent {
 
   @Input() id!: string;
   items: StartupFundingRound[] = [];
+  dateFormat: string = "dd/MM/yyyy";
 
   constructor(private readonly _processedDataService: ProcessedDataService) {
 

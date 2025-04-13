@@ -1,4 +1,0 @@
-2025-04-13 00:04:53.214 +02:00 [WRN] The WebRootPath was not found: D:\swiss-hacks-2025\innosuisse-startupticker\Innosuisse.Startupticker.WebApp\Innosuisse.Startupticker.WebApp.Server\wwwroot. Static files may be unavailable.
-2025-04-13 00:04:53.264 +02:00 [WRN] The WebRootPath was not found: D:\swiss-hacks-2025\innosuisse-startupticker\Innosuisse.Startupticker.WebApp\Innosuisse.Startupticker.WebApp.Server\wwwroot. Static files may be unavailable.
-2025-04-13 00:12:44.221 +02:00 [WRN] The WebRootPath was not found: D:\swiss-hacks-2025\innosuisse-startupticker\Innosuisse.Startupticker.WebApp\Innosuisse.Startupticker.WebApp.Server\wwwroot. Static files may be unavailable.
-2025-04-13 00:12:44.261 +02:00 [WRN] The WebRootPath was not found: D:\swiss-hacks-2025\innosuisse-startupticker\Innosuisse.Startupticker.WebApp\Innosuisse.Startupticker.WebApp.Server\wwwroot. Static files may be unavailable.

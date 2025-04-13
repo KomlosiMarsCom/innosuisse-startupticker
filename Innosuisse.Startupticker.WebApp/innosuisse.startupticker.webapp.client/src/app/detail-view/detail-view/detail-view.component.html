@@ -1,8 +1,21 @@
 <dx-data-grid [dataSource]="items"
               keyExpr="id"
               [columnHidingEnabled]="true"
-              [columnAutoWidth]="true">
+              [columnAutoWidth]="true"
+              [showBorders]="false"
+              [allowColumnReordering]="true"
+              [allowColumnResizing]="true"
+              [showColumnLines]="true"
+              columnResizingMode="widget">
 
   <dxo-search-panel [visible]="true"
                     [width]="200"></dxo-search-panel>
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+  <dxi-column [sortIndex]="0" sortOrder="desc" format="{{dateFormat}}" dataField="date" dataType="datetime" [visible]="true" caption="Date"></dxi-column>
+  <dxi-column dataField="amount" dataType="number" [visible]="true" caption="Amount"></dxi-column>
+  <dxi-column dataField="valuation" dataType="number" [visible]="true" caption="Valuation"></dxi-column>
+  <dxi-column dataField="investors" dataType="text" [visible]="true" caption="Investors"></dxi-column>
 </dx-data-grid>
