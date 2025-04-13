@@ -1,0 +1,15 @@
+.tag-container {
+  display: flex;
+  gap: 6px;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tag-badge {
+  padding: 4px 10px;
+  font-size: 13px;
+  border-radius: 12px;
+  cursor: default;
+}

@@ -1,6 +1,4 @@
-﻿using Innosuisse.Startupticker.WebApp.Server.Data.Entities._Raw.Startupticker;
-
-namespace Innosuisse.Startupticker.WebApp.Server.Data.Entities
+﻿namespace Innosuisse.Startupticker.WebApp.Server.Data.Entities
 {
     public sealed class Startup
     {

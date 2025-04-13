@@ -70,6 +70,8 @@ export class AppComponent implements OnInit {
     });
 
     this.dataSourceStartups = new DataSource(this.storeStartups);
+
+    this.loadAllCharts();
   }
 
 

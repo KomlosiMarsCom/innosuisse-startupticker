@@ -28,6 +28,14 @@ namespace Innosuisse.Startupticker.WebApp.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("tags")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<string>))]
+        public async Task<ActionResult> Tags([FromQuery] Guid startupId, CancellationToken cancellationToken)
+        {
+            var result = await dbContext.StartupsTags.Where(i => i.StartupId == startupId).Select(i => i.Name).ToListAsync(cancellationToken);
+            return Ok(result);
+        }
+
         [HttpGet("funding-round")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<StartupFundingRound>))]
         public async Task<ActionResult> FundingRound([FromQuery] Guid startupId, CancellationToken cancellationToken)

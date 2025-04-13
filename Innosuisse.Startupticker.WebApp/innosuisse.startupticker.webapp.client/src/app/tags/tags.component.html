@@ -1,0 +1,15 @@
+<div class="tag-container">
+  <ng-container *ngFor="let tag of tags">
+    <span class="tag-badge" [ngStyle]="getTagStyle(tag)" id="tag-{{tag}}-{{id}}">
+      {{ tag }}
+    </span>
+
+    <dx-tooltip target="#tag-{{tag}}-{{id}}"
+                showEvent="mouseenter"
+                hideEvent="mouseleave">
+      <div *dxTemplate="let data of 'content'">
+        {{ tag }}
+      </div>
+    </dx-tooltip>
+  </ng-container>
+</div>

@@ -5,30 +5,6 @@
     "version": "1.0"
   },
   "paths": {
-    "/test-ai": {
-      "post": {
-        "tags": [
-          "DataFetchAndEnrich"
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/sync-and-enrich-data": {
-      "post": {
-        "tags": [
-          "DataFetchAndEnrich"
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
     "/ask": {
       "post": {
         "tags": [
@@ -77,6 +53,30 @@
         }
       }
     },
+    "/test-ai": {
+      "post": {
+        "tags": [
+          "DataFetchAndEnrich"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/sync-and-enrich-data": {
+      "post": {
+        "tags": [
+          "DataFetchAndEnrich"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/grid-data-startups": {
       "post": {
         "tags": [
@@ -118,6 +118,54 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LoadResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "ProcessedData"
+        ],
+        "parameters": [
+          {
+            "name": "startupId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }

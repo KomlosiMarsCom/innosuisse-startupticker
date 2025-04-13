@@ -24,6 +24,7 @@ namespace Innosuisse.Startupticker.WebApp.Server.Data
 
         public required DbSet<StartupFundingRound> StartupsFundingRounds { get; set; } = null!;
 
+        public required DbSet<StartupTag> StartupsTags { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

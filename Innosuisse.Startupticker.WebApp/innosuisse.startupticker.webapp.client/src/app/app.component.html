@@ -1,27 +1,23 @@
-<div style="display:flex; justify-content:space-around; padding: 4px;">
-  <img src="startupticker-logo-animated.gif" width="50" />
-</div>
 <div class="app-layout">
   <div class="left-panel">
     <app-chat-bot></app-chat-bot>
   </div>
-  <div class="main-content">
-    <dx-tab-panel [deferRendering]="true" [repaintChangesOnly]="false">
-      <dxi-item title="Startups (AI Processed data)">
-        <div>
-          <dx-data-grid [dataSource]="dataSourceStartups"
-                        keyExpr="id"
-                        [columnHidingEnabled]="true"
-                        [columnAutoWidth]="true"
-                        [wordWrapEnabled]="true"
-                        [remoteOperations]="true"
-                        [showBorders]="true"
-                        [allowColumnReordering]="true"
-                        [allowColumnResizing]="true"
-                        [showColumnLines]="true"
-                        columnResizingMode="widget"
-                        height="calc(100vh - 170px)"
-                        width="100%">
+  <dx-tab-panel [deferRendering]="true" [repaintChangesOnly]="false">
+    <dxi-item title="Startups (AI Processed data)">
+      <div class="tab-content">
+        <dx-data-grid [dataSource]="dataSourceStartups"
+                      keyExpr="id"
+                      [columnHidingEnabled]="true"
+                      [columnAutoWidth]="true"
+                      [wordWrapEnabled]="false"
+                      [remoteOperations]="true"
+                      [showBorders]="true"
+                      [allowColumnReordering]="true"
+                      [allowColumnResizing]="true"
+                      [showColumnLines]="true"
+                      columnResizingMode="widget"
+                      height="calc(100vh - 150px)"
+                      width="100%">
 
             <dxo-toolbar>
               <dxi-item name="groupPanel"></dxi-item>
@@ -38,133 +34,137 @@
               <dxi-item name="searchPanel"></dxi-item>
             </dxo-toolbar>
 
-            <dxo-search-panel [visible]="true"
-                              [width]="200"></dxo-search-panel>
+          <dxo-search-panel [visible]="true"
+                            [width]="200"></dxo-search-panel>
 
-            <dxo-paging [pageSize]="50"></dxo-paging>
+          <dxo-paging [pageSize]="50"></dxo-paging>
 
-            <dxo-filter-row [visible]="true"></dxo-filter-row>
-            <dxo-header-filter [visible]="true"></dxo-header-filter>
-            <dxo-group-panel [visible]="true"></dxo-group-panel>
-            <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
-            <dxo-pager [visible]="true"
-                       [displayMode]="'compact'"
-                       [showPageSizeSelector]="true"
-                       [showInfo]="true"
-                       [showNavigationButtons]="true"></dxo-pager>
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-header-filter [visible]="true"></dxo-header-filter>
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+          <dxo-pager [visible]="true"
+                     [displayMode]="'compact'"
+                     [showPageSizeSelector]="true"
+                     [showInfo]="true"
+                     [showNavigationButtons]="true"></dxo-pager>
 
-            <dxi-column dataField="name" dataType="text" [visible]="true" caption="Name"></dxi-column>
-            <dxi-column dataField="industry" dataType="text" [visible]="true" caption="Industry"></dxi-column>
-            <dxi-column [sortIndex]="0" sortOrder="desc" format="{{dateFormat}}" dataField="foundedOn" dataType="datetime" [visible]="true" caption="Founded on"></dxi-column>
-            <dxi-column dataField="countryCode" dataType="text" [visible]="true" caption="Country code"></dxi-column>
-            <dxi-column dataField="city" dataType="text" [visible]="true" caption="City"></dxi-column>
-            <dxi-column format="{{dateFormat}}" dataField="lastFundedOn" dataType="datetime" [visible]="true" caption="Las funded on"></dxi-column>
-            <dxi-column dataField="fundingRoundsCount" dataType="number" [visible]="true" caption="Number of fundings"></dxi-column>
-
-            <dxo-master-detail [enabled]="true"
-                               template="masterDetail"></dxo-master-detail>
-
-            <div *dxTemplate="let item of 'masterDetail'">
-              <app-detail-view [id]="item.data.id"></app-detail-view>
+          <dxi-column dataField="name" dataType="text" [visible]="true" caption="Name"></dxi-column>
+          <dxi-column dataField="industry" dataType="text" [visible]="true" caption="Industry"></dxi-column>
+          <dxi-column [sortIndex]="0" sortOrder="desc" format="{{dateFormat}}" dataField="foundedOn" dataType="datetime" [visible]="true" caption="Founded on"></dxi-column>
+          <dxi-column dataField="countryCode" dataType="text" [visible]="true" caption="Country code"></dxi-column>
+          <dxi-column dataField="city" dataType="text" [visible]="true" caption="City"></dxi-column>
+          <dxi-column format="{{dateFormat}}" dataField="lastFundedOn" dataType="datetime" [visible]="true" caption="Las funded on"></dxi-column>
+          <dxi-column dataField="fundingRoundsCount" dataType="number" [visible]="true" caption="Number of fundings"></dxi-column>
+          <dxi-column width="400" dataField="tags" dataType="text" [allowSorting]="false" [allowFiltering]="false" [visible]="true" caption="Tags" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+              <app-tags [id]="data.data.id"></app-tags>
             </div>
-          </dx-data-grid>
-        </div>
-      </dxi-item>
-      <dxi-item title="Trends">
-        <div style="padding: 16px">
-          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px">
-            <dx-number-box [(value)]="fromYear" placeholder="From year" [min]="2000"></dx-number-box>
-            <dx-number-box [(value)]="toYear" placeholder="To year"></dx-number-box>
-            <dx-button text="Apply Filters" (onClick)="loadAllCharts()"></dx-button>
+          </dxi-column>
+
+          <dxo-master-detail [enabled]="true"
+                             template="masterDetail"></dxo-master-detail>
+
+          <div *dxTemplate="let item of 'masterDetail'">
+            <app-detail-view [id]="item.data.id"></app-detail-view>
           </div>
-
-          <!-- Chart 1: Total Funding by Year -->
-          <dx-chart [dataSource]="fundingByYear" title="Total Funding by Year">
-            <dxi-series argumentField="year" valueField="totalFunding" type="bar"></dxi-series>
-            <dxo-argument-axis title="Year" [label]="{ customizeText: formatYearLabel }"></dxo-argument-axis>
-            <dxo-value-axis title="CHF Total Funding"></dxo-value-axis>
-            <dxo-tooltip [enabled]="true" format="currency"></dxo-tooltip>
-          </dx-chart>
-
-          <!-- Chart 2: Funding by Canton -->
-          <dx-pie-chart [dataSource]="fundingByCanton" palette="Bright" title="Funding Amount by Canton">
-            <dxi-series argumentField="canton" valueField="funding">
-              <dxo-label [visible]="true" format="currency"></dxo-label>
-            </dxi-series>
-            <dxo-tooltip [enabled]="true" format="currency"></dxo-tooltip>
-          </dx-pie-chart>
+        </dx-data-grid>
+      </div>
+    </dxi-item>
+    <dxi-item title="Trends">
+      <div class="tab-content">
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px; padding: 3px;">
+          <dx-number-box [(value)]="fromYear" placeholder="From year" [min]="2000"></dx-number-box>
+          <dx-number-box [(value)]="toYear" placeholder="To year"></dx-number-box>
+          <dx-button text="Apply Filters" (onClick)="loadAllCharts()"></dx-button>
         </div>
-      </dxi-item>
-      <dxi-item title="Organizations (Crunchbase - Raw data)">
-        <div>
-          <dx-data-grid [dataSource]="dataSourceCrunchbase"
-                        keyExpr="id"
-                        [columnHidingEnabled]="true"
-                        [columnAutoWidth]="true"
-                        [wordWrapEnabled]="true"
-                        [remoteOperations]="true"
-                        [showBorders]="true"
-                        [allowColumnReordering]="true"
-                        [allowColumnResizing]="true"
-                        [showColumnLines]="true"
-                        columnResizingMode="widget"
-                        height="calc(100vh - 200px)"
-                        width="100%">
 
-            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+        <!-- Chart 1: Total Funding by Year -->
+        <dx-chart [dataSource]="fundingByYear" title="Total Funding by Year">
+          <dxi-series argumentField="year" valueField="totalFunding" type="bar"></dxi-series>
+          <dxo-argument-axis title="Year" [label]="{ customizeText: formatYearLabel }"></dxo-argument-axis>
+          <dxo-value-axis title="CHF Total Funding"></dxo-value-axis>
+          <dxo-tooltip [enabled]="true" format="currency"></dxo-tooltip>
+        </dx-chart>
 
-            <dxo-search-panel [visible]="true"
-                              [width]="200"></dxo-search-panel>
+        <!-- Chart 2: Funding by Canton -->
+        <dx-pie-chart [dataSource]="fundingByCanton" palette="Bright" title="Funding Amount by Canton">
+          <dxi-series argumentField="canton" valueField="funding">
+            <dxo-label [visible]="true" format="currency"></dxo-label>
+          </dxi-series>
+          <dxo-tooltip [enabled]="true" format="currency"></dxo-tooltip>
+        </dx-pie-chart>
+      </div>
+    </dxi-item>
+    <dxi-item title="Organizations (Crunchbase - Raw data)">
+      <div class="tab-content">
+        <dx-data-grid [dataSource]="dataSourceCrunchbase"
+                      keyExpr="id"
+                      [columnHidingEnabled]="true"
+                      [columnAutoWidth]="true"
+                      [wordWrapEnabled]="true"
+                      [remoteOperations]="true"
+                      [showBorders]="true"
+                      [allowColumnReordering]="true"
+                      [allowColumnResizing]="true"
+                      [showColumnLines]="true"
+                      columnResizingMode="widget"
+                      height="calc(100vh - 150px)"
+                      width="100%">
 
-            <dxo-paging [pageSize]="50"></dxo-paging>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
 
-            <dxo-filter-row [visible]="true"></dxo-filter-row>
-            <dxo-header-filter [visible]="true"></dxo-header-filter>
-            <dxo-group-panel [visible]="true"></dxo-group-panel>
-            <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
-            <dxo-pager [visible]="true"
-                       [displayMode]="'compact'"
-                       [showPageSizeSelector]="true"
-                       [showInfo]="true"
-                       [showNavigationButtons]="true"></dxo-pager>
-          </dx-data-grid>
-        </div>
-      </dxi-item>
-      <dxi-item title="Companies (Startupticker - Raw data)">
-        <div>
-          <dx-data-grid [dataSource]="dataSourceStartupticker"
-                        keyExpr="id"
-                        [columnHidingEnabled]="true"
-                        [columnAutoWidth]="true"
-                        [wordWrapEnabled]="true"
-                        [remoteOperations]="true"
-                        [showBorders]="true"
-                        [allowColumnReordering]="true"
-                        [allowColumnResizing]="true"
-                        [showColumnLines]="true"
-                        columnResizingMode="widget"
-                        height="calc(100vh - 200px)"
-                        width="100%">
+          <dxo-search-panel [visible]="true"
+                            [width]="200"></dxo-search-panel>
 
-            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+          <dxo-paging [pageSize]="50"></dxo-paging>
 
-            <dxo-search-panel [visible]="true"
-                              [width]="200"></dxo-search-panel>
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-header-filter [visible]="true"></dxo-header-filter>
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+          <dxo-pager [visible]="true"
+                     [displayMode]="'compact'"
+                     [showPageSizeSelector]="true"
+                     [showInfo]="true"
+                     [showNavigationButtons]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </dxi-item>
+    <dxi-item title="Companies (Startupticker - Raw data)">
+      <div>
+        <dx-data-grid [dataSource]="dataSourceStartupticker"
+                      keyExpr="id"
+                      [columnHidingEnabled]="true"
+                      [columnAutoWidth]="true"
+                      [wordWrapEnabled]="true"
+                      [remoteOperations]="true"
+                      [showBorders]="true"
+                      [allowColumnReordering]="true"
+                      [allowColumnResizing]="true"
+                      [showColumnLines]="true"
+                      columnResizingMode="widget"
+                      height="calc(100vh - 150px)"
+                      width="100%">
 
-            <dxo-paging [pageSize]="50"></dxo-paging>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
 
-            <dxo-filter-row [visible]="true"></dxo-filter-row>
-            <dxo-header-filter [visible]="true"></dxo-header-filter>
-            <dxo-group-panel [visible]="true"></dxo-group-panel>
-            <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
-            <dxo-pager [visible]="true"
-                       [displayMode]="'compact'"
-                       [showPageSizeSelector]="true"
-                       [showInfo]="true"
-                       [showNavigationButtons]="true"></dxo-pager>
-          </dx-data-grid>
-        </div>
-      </dxi-item>
-    </dx-tab-panel>
-  </div>
+          <dxo-search-panel [visible]="true"
+                            [width]="200"></dxo-search-panel>
+
+          <dxo-paging [pageSize]="50"></dxo-paging>
+
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-header-filter [visible]="true"></dxo-header-filter>
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+          <dxo-pager [visible]="true"
+                     [displayMode]="'compact'"
+                     [showPageSizeSelector]="true"
+                     [showInfo]="true"
+                     [showNavigationButtons]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </dxi-item>
+  </dx-tab-panel>
 </div>

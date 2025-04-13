@@ -9,6 +9,7 @@ import { environment } from '../environment/environment';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DetailViewComponent } from './detail-view/detail-view/detail-view.component';
 import { ChatBotComponent } from './chat/chat.component';
+import { TagsComponent } from './tags/tags.component';
 
 const apiConfiguration = new Configuration({ basePath: environment.apiBasePath, withCredentials: true });
 
@@ -16,7 +17,8 @@ const apiConfiguration = new Configuration({ basePath: environment.apiBasePath, 
   declarations: [
     AppComponent,
     DetailViewComponent,
-    ChatBotComponent
+    ChatBotComponent,
+    TagsComponent
   ],
   imports: [
     BrowserModule,

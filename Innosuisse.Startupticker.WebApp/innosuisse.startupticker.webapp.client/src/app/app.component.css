@@ -1,25 +1,27 @@
 :host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
+  max-width: 1280px;
+  padding: 2rem;
+  text-align: center;
 }
 
 th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 table {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 
 .app-layout {
   display: flex;
+  height: calc(100vh - 77px)
 }
 
 .left-panel {
   width: 350px;
+  max-width: 350px;
   border-right: 1px solid #ddd;
   background-color: #f9f9f9;
   padding: 8px;
@@ -35,4 +37,9 @@ table {
   padding: 16px;
   flex-grow: 1;
   background-color: #fff;
+}
+
+.tab-content {
+  padding-left: 5px;
+  width: calc(100vw - 355px);
 }
