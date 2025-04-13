@@ -6,6 +6,8 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
 {
     public class OpenAIService
     {
+        private const string _apikey = "<<apikey>>";
+
         public OpenAIService(IConfiguration config)
         { }
 
@@ -18,11 +20,10 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
         {
             var endpoint = new Uri("https://swisshackstest.openai.azure.com/");
             var deploymentName = "text-embedding-ada-002";
-            var apiKey = "<<apikey>>";
 
             AzureOpenAIClient azureClient = new(
                 endpoint,
-                new AzureKeyCredential(apiKey));
+                new AzureKeyCredential(_apikey));
             var embeddingClient = azureClient.GetEmbeddingClient(deploymentName);
 
             var messages = new List<string> { input };
@@ -38,15 +39,6 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
         /// <returns>An array of strings representing the extracted tags.</returns>
         public async Task<string> GenerateChatResponseAsync(string systemPrompt, string input)
         {
-
-            //var systemPrompt = "Extract 3 to 5 relevant tags from this company profile.";
-            //var systemPrompt = "Extract 3 to 5 relevant tags from this company. You get name of the Swiss company on market as input. Try to get the tags.";
-            //var systemPrompt = "Extract industry of company based on description and categories. You get name of the Swiss company on market as input. Try to get the tags.";
-
-
-            //input = "Zattoo is one of the leading TV streaming providers in Europe with several million users per month, serving both B2B and DTC markets. | Broadcasting,Internet,Media and Entertainment,TV,Video,Video Streaming";
-            //input = "Scrimber CSC AG";
-
             var chatMessages = new List<ChatMessage>
             {
                 ChatMessage.CreateSystemMessage(systemPrompt),
@@ -55,11 +47,10 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
 
             var endpoint = new Uri("https://swisshackstest.openai.azure.com/");
             var deploymentName = "gpt-35-turbo";
-            var apiKey = "<<apikey>>";
 
             AzureOpenAIClient azureClient = new(
                 endpoint,
-                new AzureKeyCredential(apiKey));
+                new AzureKeyCredential(_apikey));
             ChatClient chatClient = azureClient.GetChatClient(deploymentName);
 
             var requestOptions = new ChatCompletionOptions()
@@ -71,9 +62,6 @@ namespace Innosuisse.Startupticker.WebApp.Server.Services
             var content = chatCompletion.Content;
             var strContent = content[0].Text;
             return strContent;
-
-            // Split the tags by commas and clean up whitespace
-            //return strContent.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         }
     } 
 }
